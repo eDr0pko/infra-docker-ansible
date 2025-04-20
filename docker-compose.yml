@@ -22,6 +22,7 @@ services:
     networks:
       - reseau_ssh
     command: ansible -i /ansible/inventory.ini ssh-server -m ping
+    command: ansible-playbook -i /ansible/inventory.ini /ansible/playbook.yml
 
 
 networks:
