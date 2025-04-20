@@ -1,8 +1,7 @@
 ---
 - name: Install and configure Nginx
   hosts: web_servers
-  become: yes
-  become_method: sudo
+  become: no
 
   roles:
     - nginx
