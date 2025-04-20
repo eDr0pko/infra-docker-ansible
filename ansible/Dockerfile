@@ -2,7 +2,7 @@ FROM almalinux:9
 
 # Installer les dépendances
 RUN dnf update -y && \
-    dnf install -y python3-pip sudo
+    dnf install -y python3-pip sudo sshpass
 
 # Installer Ansible
 RUN pip3 install ansible
