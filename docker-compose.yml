@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  ssh_server:
+    build:
+      context: ./ssh_server
+    container_name: ssh_server
+    ports:
+      - "2222:22"
+    hostname: ssh-server
