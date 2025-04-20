@@ -7,7 +7,7 @@ services:
     container_name: ssh_server
     ports:
       - "2222:22"
-      - "80:80"
+      - "8080:80"
     hostname: ssh-server
     networks:
       - reseau_ssh
