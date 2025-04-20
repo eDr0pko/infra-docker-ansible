@@ -1,10 +1,10 @@
 # infra-docker-ansible
 
-> **Projet d'infrastructure avec Docker, SSH Server et Ansible Controller.**
+> **Projet d'infrastructure avec Docker, SSH Server, Ansible Controller et Nginx.**
 
 Ce projet crée deux conteneurs Docker :
 - Un serveur SSH basé sur Debian 12.
-- Un contrôleur Ansible basé sur AlmaLinux 9 pour automatiser des tâches sur le serveur SSH.
+- Un contrôleur Ansible basé sur AlmaLinux 9 pour automatiser des tâches sur le serveur SSH, notamment le déploiement de Nginx.
 
 Ils sont connectés sur un réseau privé Docker (reseau_ssh).
 
@@ -15,21 +15,33 @@ Ils sont connectés sur un réseau privé Docker (reseau_ssh).
 ```
 infra-docker-ansible/
 ├── ansible/
+│   ├── roles/
+│   │   └── nginx/
+│   │       ├── handlers/
+│   │       │   └── main.yml
+│   │       └── tasks/
+│   │           └── main.yml
 │   ├── Dockerfile
 │   ├── inventory.ini
+│   ├── playbook.yml
 │   └── ansible.cfg
 ├── ssh_server/
 │   └── Dockerfile
-│── docker-compose.yml
+├── docker-compose.yml
 └── install_docker.sh
+
 ```
 
-- `ssh_server/Dockerfile` : configure un serveur SSH sous Debian 12.
-- `ansible/Dockerfile` : installe Ansible sur AlmaLinux 9.
-- `ansible/inventory.ini` : fichier d'inventaire Ansible pour le serveur cible.
-- `ansible/ansible.cfg` : configuration d'Ansible.
-- `docker-compose.yml` : orchestre l'infrastructure.
-- `install_docker.sh` : installe Docker et docker-compose.
+- `ssh_server/Dockerfile` : Configure un serveur SSH sous Debian 12.
+- `ansible/Dockerfile` : Installe Ansible sur AlmaLinux 9.
+- `ansible/roles/` : Gère les rôles Ansible, ici un seul rôle `nginx` pour installer et configurer Nginx.
+  - `ansible/roles/nginx/handlers/main.yml` : Définit les gestionnaires de tâches Ansible pour redémarrer Nginx si nécessaire.
+  - `ansible/roles/nginx/tasks/main.yml` : Liste des tâches pour installer et configurer Nginx sur le serveur cible.
+- `ansible/inventory.ini` : Fichier d'inventaire Ansible pour spécifier les hôtes et groupes cibles (ici, le serveur SSH).
+- `ansible/ansible.cfg` : Fichier de configuration d'Ansible, incluant les paramètres de connexion et les options de vérification des clés SSH.
+- `docker-compose.yml` : Orchestration des conteneurs Docker pour le serveur SSH et le contrôleur Ansible, incluant les configurations réseau et les ports.
+- `install_docker.sh` : Script pour installer Docker et Docker Compose sur la machine hôte.
+
 
 ---
 
@@ -71,8 +83,6 @@ ssh-server | SUCCESS => {
 }
 ```
 
----
-
 ## ⚙️ Détails techniques
 
 - **SSH Server**
@@ -91,11 +101,20 @@ ssh-server | SUCCESS => {
     - sshpass pour la gestion du mot de passe SSH
   - Exécute automatiquement un ping Ansible vers `ssh-server`.
 
+- **Nginx (via Ansible)**
+  - Installation :
+    - Rôle Ansible pour installer Nginx sur le serveur SSH.
+    - Le rôle configure et démarre le service Nginx.
+    - Le service est ensuite activé pour démarrer automatiquement au démarrage du conteneur.
+  - Configuration :
+    - Fichier de configuration par défaut `/etc/nginx/nginx.conf`.
+    - Port HTTP exposé sur `localhost:8080` (par défaut).
+  - Vérification de l'installation via `curl` pour tester la réponse HTTP.
+
 - **Docker Compose**
   - Réseau privé `reseau_ssh` pour la communication entre conteneurs.
   - Dépendances configurées (`depends_on`).
 
----
 
 ## 🛠️ Commandes utiles
 
