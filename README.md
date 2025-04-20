@@ -137,3 +137,13 @@ docker exec -it ansible_controller bash
 ```bash
 docker logs ansible_controller
 ```
+
+---
+
+## 🧪 Environnement de test
+
+Toutes les étapes et configurations ont été testées dans un environnement virtuel sous VMware avec une machine virtuelle Debian 12.
+
+## 📂 Lien GitHub
+
+Vous pouvez retrouver le code source de ce projet sur [GitHub](https://github.com/eDr0pko/infra-docker-ansible).
