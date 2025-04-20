@@ -118,5 +118,3 @@ docker exec -it ansible_controller bash
 ```bash
 docker logs ansible_controller
 ```
-
----
