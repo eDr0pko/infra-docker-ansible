@@ -1,11 +1,14 @@
 FROM almalinux:9
 
-# Installer Ansible
+# Installer les dépendances
 RUN dnf update -y && \
-    dnf install -y ansible && \
-    dnf clean all
+    dnf install -y python3-pip sudo
 
-# Définir le répertoire de travail
+# Installer Ansible
+RUN pip3 install ansible
+
+# Créer un répertoire pour les configurations d'Ansible
 WORKDIR /ansible
 
-CMD ["ansible", "--version"]
+# Lancer Ansible en mode interactif
+CMD [ "ansible", "--version" ]

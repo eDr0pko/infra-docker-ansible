@@ -9,7 +9,7 @@ services:
       - "2222:22"
     hostname: ssh-server
     networks:
-      - infra
+      - reseau_ssh
 
   ansible_controller:
     build:
@@ -17,12 +17,10 @@ services:
     container_name: ansible_controller
     depends_on:
       - ssh_server
-    volumes:
-      - ./ansible:/ansible  #Dossier local ansible dans le conteneur
     networks:
-      - infra
-    entrypoint: ["ansible-playbook", "/ansible/playbook.yml", "-i", "/ansible/inventory.ini"]
+      - reseau_ssh
+    command: bash -c "sleep 10 && ansible ssh-server -m ping"
 
 networks:
-  infra:
+  reseau_ssh:
     driver: bridge
