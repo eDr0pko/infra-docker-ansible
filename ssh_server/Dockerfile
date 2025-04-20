@@ -13,5 +13,9 @@ RUN adduser user sudo
 RUN mkdir /var/run/sshd
 EXPOSE 22
 
+#Dossier temporaire pour Ansible
+RUN mkdir -p /tmp/.ansible/tmp && chmod 777 /tmp/.ansible/tmp
+
+
 # Démarrer SSHD
 CMD ["/usr/sbin/sshd", "-D"]
