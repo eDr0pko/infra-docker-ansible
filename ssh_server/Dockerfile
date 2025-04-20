@@ -8,6 +8,8 @@ RUN useradd -m -s /bin/bash user
 RUN echo "user:user" | chpasswd
 RUN adduser user sudo
 
+RUN echo "ALL ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 RUN mkdir /var/run/sshd
 EXPOSE 22
 
