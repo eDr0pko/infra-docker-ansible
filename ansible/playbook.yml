@@ -1,0 +1,15 @@
+---
+- name: Installer Nginx sur le serveur SSH
+  hosts: ssh_server
+  become: true  # Utiliser sudo pour exécuter les commandes
+  tasks:
+    - name: Installer Nginx
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+
+    - name: Démarrer Nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        enabled: true

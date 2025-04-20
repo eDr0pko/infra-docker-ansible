@@ -8,3 +8,21 @@ services:
     ports:
       - "2222:22"
     hostname: ssh-server
+    networks:
+      - infra
+
+  ansible_controller:
+    build:
+      context: ./ansible
+    container_name: ansible_controller
+    depends_on:
+      - ssh_server
+    volumes:
+      - ./ansible:/ansible  #Dossier local ansible dans le conteneur
+    networks:
+      - infra
+    entrypoint: ["ansible-playbook", "/ansible/playbook.yml", "-i", "/ansible/inventory.ini"]
+
+networks:
+  infra:
+    driver: bridge
