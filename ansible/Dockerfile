@@ -1,14 +1,15 @@
 FROM almalinux:9
 
-# Installer les dépendances
+# Installer Ansible et sshpass
 RUN dnf update -y && \
-    dnf install -y python3-pip sudo sshpass
+    dnf install -y python3-pip sudo openssh-clients sshpass && \
+    pip3 install ansible
 
-# Installer Ansible
-RUN pip3 install ansible
+# Créer un dossier temporaire pour Ansible
+RUN mkdir -p /tmp/.ansible/tmp && chmod 777 /tmp/.ansible/tmp
 
-# Créer un répertoire pour les configurations d'Ansible
+# Dossier de travail
 WORKDIR /ansible
 
-# Lancer Ansible en mode interactif
-CMD [ "ansible", "--version" ]
+# Commande par défaut : ne rien faire (ce sera docker-compose qui donnera la commande ansible)
+CMD [ "sleep", "infinity" ]
