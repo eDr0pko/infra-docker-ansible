@@ -19,7 +19,8 @@ services:
       - ssh_server
     networks:
       - reseau_ssh
-    command: bash -c "sleep 10 && ansible ssh-server -m ping"
+    command: ansible -i /ansible/inventory.ini ssh-server -m ping
+
 
 networks:
   reseau_ssh:
